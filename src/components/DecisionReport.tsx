@@ -1,5 +1,6 @@
 import type { EvidenceRecord } from '../domain/model';
 import type { DecisionReportModel } from '../engine/buildReport';
+import { StatusBadge } from './StatusBadge';
 
 const evidenceTypeCopy: Record<EvidenceRecord['evidenceType'], string> = {
   case: '공개사례',
@@ -22,6 +23,7 @@ function SourceList({ sources, emptyCopy }: { sources: EvidenceRecord[]; emptyCo
         <li key={source.id}>
           <a href={source.sourceUrl} target="_blank" rel="noreferrer">{source.title}</a>
           <span>{evidenceTypeCopy[source.evidenceType]} · 확인일 {source.observedAt}</span>
+          <StatusBadge value={source.status} />
         </li>
       ))}
     </ul>

@@ -421,11 +421,16 @@ summary {
   padding-left: 1.2rem;
 }
 
-.source-list li span {
+.source-list li > span:not(.status-badge) {
   display: block;
   margin-top: var(--space-1);
   color: var(--color-muted);
   font-size: 0.82rem;
+}
+
+.source-list li > .status-badge {
+  display: inline-flex;
+  margin-top: var(--space-2);
 }
 
 .market-notice {

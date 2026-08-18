@@ -7,6 +7,7 @@
     "dev": "vite",
     "test": "NODE_OPTIONS=--no-experimental-webstorage vitest",
     "test:run": "NODE_OPTIONS=--no-experimental-webstorage vitest run",
+    "test:e2e": "playwright test",
     "typecheck": "tsc -b --pretty false",
     "build": "tsc -b && vite build"
   },
@@ -15,6 +16,7 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.5",

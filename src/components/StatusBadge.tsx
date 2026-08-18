@@ -1,6 +1,6 @@
 import type { Provenance, RouteDecision, ValidationState } from '../domain/model';
 
-type BadgeValue = Provenance | ValidationState | RouteDecision;
+type BadgeValue = Provenance | ValidationState | RouteDecision | 'current';
 
 const labelMap: Record<BadgeValue, string> = {
   official_source: 'Official Source',
@@ -12,6 +12,7 @@ const labelMap: Record<BadgeValue, string> = {
   needs_validation: 'Needs Validation',
   historical: 'Historical',
   expired: 'Expired',
+  current: 'Current',
   review: 'Review',
   qualification_required: 'Qualification Required',
   not_qualified: 'Not Qualified',
@@ -29,6 +30,7 @@ const toneMap: Record<BadgeValue, string> = {
   needs_validation: 'warning',
   historical: 'neutral',
   expired: 'danger',
+  current: 'positive',
   review: 'positive',
   qualification_required: 'warning',
   not_qualified: 'danger',
