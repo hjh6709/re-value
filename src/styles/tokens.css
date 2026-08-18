@@ -12,6 +12,7 @@
   --color-surface: #ffffff;
   --color-surface-subtle: #eef4f1;
   --color-border: #cbd5d1;
+  --color-border-strong: #8fa39b;
   --color-text: #17211e;
   --color-muted: #596762;
   --space-1: 0.25rem;
@@ -20,5 +21,6 @@
   --space-4: 1rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
+  --space-10: 2.5rem;
   --radius: 0.5rem;
 }

@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import type { AnalysisStep } from './app/analysisReducer';
 import { useAnalysis } from './app/useAnalysis';
 import { demoCases, emptyResourceDraft } from './data/cases';
+import { decisionMemories } from './data/decisions';
 import { AppHeader } from './components/AppHeader';
 import { CaseLibrary } from './components/CaseLibrary';
+import { DecisionReport } from './components/DecisionReport';
+import { FreshnessDemo } from './components/FreshnessDemo';
 import { ResourceForm } from './components/ResourceForm';
 import { ResolutionView } from './components/ResolutionView';
+import { RouteDecisionView } from './components/RouteDecisionView';
 
 const stepMeta: Record<AnalysisStep, { number: number; label: string; heading: string }> = {
   case_library: { number: 1, label: '사례 선택', heading: '실제 공개사례로 시작하기' },
@@ -16,8 +21,20 @@ const stepMeta: Record<AnalysisStep, { number: number; label: string; heading: s
 
 export default function App() {
   const analysis = useAnalysis();
+  const [syntheticQuantity, setSyntheticQuantity] = useState(4);
   const meta = stepMeta[analysis.state.step];
   const selectedCase = demoCases.find((item) => item.id === analysis.state.selectedCaseId);
+  const quantityReopenMemory = decisionMemories.find((item) => item.id === 'quantity-reopen-demo');
+  const syntheticResource = analysis.state.resource && {
+    ...analysis.state.resource,
+    id: 'synthetic-quantity-resource',
+    monthlyQuantityTon: {
+      value: syntheticQuantity,
+      provenance: 'user_input' as const,
+      validationState: 'confirmed' as const,
+      evidenceIds: [],
+    },
+  };
 
   return (
     <>
@@ -44,8 +61,22 @@ export default function App() {
         {analysis.state.step === 'resolution' && analysis.state.resource && analysis.state.gate && (
           <ResolutionView resource={analysis.state.resource} gate={analysis.state.gate} onContinue={analysis.reviewRoutes} />
         )}
-        {analysis.state.step === 'route_decision' && <h1>{meta.heading}</h1>}
-        {analysis.state.step === 'decision_report' && <h1>{meta.heading}</h1>}
+        {analysis.state.step === 'route_decision' && (
+          <RouteDecisionView qualifications={analysis.state.qualifications} onOpenReport={analysis.openReport} />
+        )}
+        {analysis.state.step === 'decision_report' && analysis.state.report && (
+          <>
+            <DecisionReport report={analysis.state.report} />
+            {quantityReopenMemory && syntheticResource && (
+              <FreshnessDemo
+                memory={quantityReopenMemory}
+                resource={syntheticResource}
+                onQuantityChange={setSyntheticQuantity}
+              />
+            )}
+            <button type="button" className="button-text restart-button" onClick={analysis.restart}>다른 자원 분석하기</button>
+          </>
+        )}
       </main>
     </>
   );

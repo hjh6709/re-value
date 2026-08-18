@@ -31,4 +31,21 @@ describe('primary resource flow', () => {
     expect(screen.getAllByText('Unknown').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Needs Validation').length).toBeGreaterThan(0);
   });
+
+  it('completes the PBT judging flow through the guarded report', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: '현대모비스 진천 PBT 사례 분석' }));
+    await user.click(screen.getByRole('button', { name: '자원 정보 분석' }));
+    await user.click(await screen.findByRole('button', { name: '검증된 경로 확인' }));
+
+    expect(screen.getByRole('heading', { name: '검증된 Route 비교' })).toBeInTheDocument();
+    expect(screen.getByText('Qualification Required')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '의사결정 보고서 보기' }));
+
+    expect(screen.getByRole('heading', { name: '의사결정 보고서' })).toBeInTheDocument();
+    expect(screen.getByText('PBT 재생원료화 검토 · 추가 자격 확인 필요')).toBeInTheDocument();
+    expect(screen.getByText('Synthetic Demo Scenario')).toBeInTheDocument();
+  });
 });
