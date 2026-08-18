@@ -152,12 +152,12 @@ PDF 내보내기는 브라우저 보고서가 완성된 뒤 시간이 남을 경
 실제 재질    PBT                Official Source / Confirmed
 발생공정     자동차 부품 검사    Official Source / Confirmed
 형태         성형부품            AI Inference / Inferred
-난연제       미확인              Unknown / Needs Validation
-금속이물     미확인              Unknown / Needs Validation
 
 현재 상태: Qualification Required
-시장 판단 전에 2개 정보의 확인이 필요합니다.
+Resource Identity 확인을 위해 1개 정보의 확인이 필요합니다.
 ```
+
+Route별 Missing Evidence는 이 화면에서 고정 질문으로 만들지 않는다. Route Retrieval 이후 실제 Route Evidence에 명시된 요구조건에서 동적으로 생성한다. 공식 근거가 요구하지 않는 난연제·금속이물 등의 항목을 PBT의 필수조건처럼 표시하지 않는다.
 
 ### 5.4 Route Decision
 
@@ -213,7 +213,8 @@ Route 비교 전에 Resource Evidence의 충족 상태를 검사한다.
 - 형태 확인
 - 오염·이물 확인
 - 반복 발생량 확인
-- 공식 근거 존재 여부
+
+Evidence Gate는 Resource 자체의 Identity, Quality, Supply 준비도만 판단한다. 공식 Route Evidence의 존재 여부는 Gate에 포함하지 않고 Route Evidence Retrieval과 Route Qualification 단계에서 처리한다. 따라서 검색 가능한 Route가 없어도 Resource 자체는 `Ready for Route Review` 상태가 될 수 있다.
 
 Gate 결과:
 
@@ -240,6 +241,7 @@ Route 후보는 이 Library의 기록만 사용한다.
 - 출처 URL, 확인일, 유효기간, 현재 상태
 
 의미적 검색은 후보를 찾는 데만 사용한다. 후보의 최종 상태는 명시적 Rule로 결정한다.
+Route별 Missing Evidence는 `QualificationCondition` 중 현재 값이 `Unknown`인 필수조건에서 동적으로 생성한다. 시드 데이터나 화면 컴포넌트에 특정 질문을 고정하지 않는다.
 
 ### 6.4 Route Qualification Engine
 
@@ -445,13 +447,15 @@ Decision Freshness / Conditional Reopen
 1. Home에서 `현대모비스 진천 PBT 사례 분석`을 선택한다.
 2. 공식 공개자료에서 확인된 값이 Resource Input에 채워진다.
 3. Resource Resolver가 행정 분류, PBT, 자동차 부품 조립·검사 공정을 분리한다.
-4. 형태는 AI 추론, 난연제와 금속 이물은 미확인으로 표시한다.
-5. Evidence Gate가 `Qualification Required`와 두 가지 확인사항을 제시한다.
-6. Route Library에서 공식 선례가 있는 재생원료화와 현재 소각 Baseline을 검색한다.
+4. 형태는 AI 추론으로 표시하고, 입력되지 않은 Resource 품질 정보는 `Unknown`으로 유지한다.
+5. Evidence Gate가 Route와 무관한 Resource 준비도만 판정한다.
+6. Route Library에서 공식 선례가 있는 재생원료화와 현재 소각 Baseline을 검색하고, 실제 Route 요구조건에서 Missing Evidence를 생성한다.
 7. Route Qualification이 점수 없이 충족·미확인 조건을 비교한다.
 8. Decision Report가 `재생원료화 Route 우선 검토`, 판단 이유, 미확인 사항, 다음 행동, 출처를 보여준다.
 
 ### Freshness 보조 시연
+
+이 흐름은 실제 공개기업 사례가 아닌 `Synthetic Demo Scenario`이며, 시드 데이터와 화면 상단에 `Conditional Reopen 기능 시연용 가상 시나리오`라고 표시한다.
 
 1. 과거 월 4t으로 물량 조건을 충족하지 못해 제외된 Decision Memory를 불러온다.
 2. 현재 물량을 월 12t으로 변경한다.
@@ -499,6 +503,9 @@ Decision Freshness / Conditional Reopen
 - 임의 점수 없이 Evidence State와 명시적 Rule로 판단함
 - 검증된 Route Library 밖의 경로를 생성하지 않음
 - 출처 만료와 Conditional Reopen을 모두 Freshness로 처리함
+- Route별 Missing Evidence가 실제 Route 조건에서 동적으로 생성됨
+- Evidence Gate가 Resource 준비도만 판단하고 Route 존재 여부와 분리됨
+- Conditional Reopen 보조 시연이 `Synthetic Demo Scenario`로 표시됨
 - 실제 공개사례와 데모 추가정보의 출처 수준을 구분함
 - API 키와 네트워크 없이 전체 주 시나리오가 동작함
 - 공모전 심사위원에게 3분 안에 핵심 차별성을 시연할 수 있음
