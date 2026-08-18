@@ -496,8 +496,8 @@ describe('resource resolver', () => {
   it('falls back to deterministic resolution when the remote resolver fails', async () => {
     const failingRemote = { resolve: async () => { throw new Error('offline'); } };
     const resolver = createResourceResolver({ remote: failingRemote });
-    const resource = await resolver.resolve({ name: 'IC Tray', description: '반도체 공정', administrativeIdentity: '51-03-01' });
-    expect(resource.materialIdentity.value).toContain('PP');
+    const resource = await resolver.resolve({ name: 'PBT 외장 불량품', description: '자동차 부품 검사 공정', administrativeIdentity: '51-03-01' });
+    expect(resource.materialIdentity.value).toContain('PBT');
   });
 });
 ```
@@ -524,7 +524,6 @@ export interface ResourceDraft {
 
 const materialAliases: Record<string, string> = {
   PBT: 'PBT',
-  'IC TRAY': 'PP',
   'WAFER CARRIER': 'PC/PBT/POM',
 };
 
