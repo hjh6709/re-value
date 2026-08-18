@@ -165,7 +165,7 @@ Route별 Missing Evidence는 이 화면에서 고정 질문으로 만들지 않�
 
 | Route | Resource Fit | Evidence | Missing | Decision |
 | --- | --- | --- | --- | --- |
-| 재생원료화 | 핵심 재질 조건 부합 | 공식 선례 있음 | 이물질 | Review |
+| 재생원료화 | 핵심 재질 조건 부합 | 공식 Route 근거 있음 | Route 조건에서 동적 생성 | Review |
 | 직접 재사용 | 용도 조건 미확인 | 제한적 | 품질·수요처 | Watch |
 | 현재 소각 | 현재 실행 중 | 확인됨 | 없음 | Baseline |
 
@@ -342,7 +342,9 @@ interface Resource {
   form: SourcedValue<string>;
   contaminants: SourcedValue<string[]>;
   monthlyQuantityTon: SourcedValue<number>;
+  qualitySpecification: SourcedValue<string>;
   currentTreatment: SourcedValue<string>;
+  notices: string[];
 }
 
 interface EvidenceRecord {
@@ -354,6 +356,7 @@ interface EvidenceRecord {
   validUntil: string | null;
   status: 'current' | 'historical' | 'expired';
   supportedClaims: string[];
+  marketKind: 'monthly_average' | 'listing_price' | 'bid_minimum' | null;
 }
 
 interface QualificationCondition {
@@ -449,7 +452,7 @@ Decision Freshness / Conditional Reopen
 3. Resource Resolver가 행정 분류, PBT, 자동차 부품 조립·검사 공정을 분리한다.
 4. 형태는 AI 추론으로 표시하고, 입력되지 않은 Resource 품질 정보는 `Unknown`으로 유지한다.
 5. Evidence Gate가 Route와 무관한 Resource 준비도만 판정한다.
-6. Route Library에서 공식 선례가 있는 재생원료화와 현재 소각 Baseline을 검색하고, 실제 Route 요구조건에서 Missing Evidence를 생성한다.
+6. Route Library에서 공식 등록자료에 원료 재활용 수요가 확인된 후보와 현재 소각 Baseline을 검색하고, 실제 Route 요구조건에서 Missing Evidence를 생성한다. 등록된 희망경로는 완료된 재활용 선례로 표현하지 않는다.
 7. Route Qualification이 점수 없이 충족·미확인 조건을 비교한다.
 8. Decision Report가 `재생원료화 Route 우선 검토`, 판단 이유, 미확인 사항, 다음 행동, 출처를 보여준다.
 
