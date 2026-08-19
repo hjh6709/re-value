@@ -23,7 +23,7 @@ test('primary actions and report reflow without horizontal overflow', async ({ p
   await expect(page.getByText('Synthetic Demo Scenario')).toBeVisible();
   await expect(page.getByLabel('현재 월 발생량')).toBeVisible();
   await expectNoHorizontalOverflow(page);
-  await page.screenshot({ path: `/private/tmp/re-value-${testInfo.project.name}-report.png`, fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath('report.png'), fullPage: true });
 });
 
 test('keyboard focus is visible and 200% text does not create horizontal overflow', async ({ page }) => {
