@@ -2,6 +2,8 @@
 
 충북 제조업 공정부산물의 실제 정체성을 정리하고, 등록된 공식 근거와 현재 조건을 비교해 다음 확인사항을 제시하는 오프라인 우선 의사결정 시제품입니다. 적합도 점수나 AI가 생성한 경로 대신 `Resource Identity → Evidence Gate → Verified Route → Decision Report → Conditional Reopen` 순서로 판단 과정을 공개합니다.
 
+공개 데모: [https://hjh6709.github.io/re-value/](https://hjh6709.github.io/re-value/)
+
 ## 실행과 검증
 
 Node.js 20 이상을 권장합니다.
