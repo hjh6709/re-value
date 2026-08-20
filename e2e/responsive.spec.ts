@@ -9,7 +9,7 @@ async function expectNoHorizontalOverflow(page: Page) {
 }
 
 test('primary actions and report reflow without horizontal overflow', async ({ page }, testInfo) => {
-  await page.goto('/');
+  await page.goto('/re-value/');
   await expectNoHorizontalOverflow(page);
   await expect(page.getByRole('button', { name: '현대모비스 진천 PBT 사례 분석' })).toBeVisible();
 
@@ -27,7 +27,7 @@ test('primary actions and report reflow without horizontal overflow', async ({ p
 });
 
 test('keyboard focus is visible and 200% text does not create horizontal overflow', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/re-value/');
   await page.keyboard.press('Tab');
   const primaryAction = page.getByRole('button', { name: '현대모비스 진천 PBT 사례 분석' });
   await expect(primaryAction).toBeFocused();

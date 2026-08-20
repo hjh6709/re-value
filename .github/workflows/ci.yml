@@ -46,7 +46,7 @@ jobs:
         run: npm run typecheck
 
       - name: Build production bundle
-        run: npm run build
+        run: npm run verify:pages
 
   browser-e2e:
     name: Browser E2E

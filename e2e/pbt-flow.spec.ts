@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('completes the evidence-based PBT decision flow offline', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/re-value/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
 
